@@ -106,25 +106,33 @@
 
 # COMMAND ----------
 
-# MAGIC %sh
-# MAGIC ls -al /dbfs/mnt/datalake/book/chapter04/YellowTaxisDelta/*.parquet
+log_files = dbutils.fs.ls('/mnt/datalake/book/chapter04/YellowTaxisDelta/')
+parquet_paths = [file_info.path for file_info in log_files if file_info.path.endswith('.parquet')]
+for path in parquet_paths:
+    print(path)
+
+# COMMAND ----------
+
+log_files = dbutils.fs.ls('/mnt/datalake/book/chapter04/YellowTaxisDelta/_delta_log/')
+json_paths = [file_info.path for file_info in log_files if file_info.path.endswith('.json')]
+for path in json_paths:
+    print(path)
+
+# COMMAND ----------
+
+dbutils.fs.cp("dbfs:/mnt/datalake/book/chapter04/YellowTaxisDelta/_delta_log/00000000000000000001.json", "file:/tmp/commit.json")
 
 # COMMAND ----------
 
 # MAGIC %sh
-# MAGIC ls -al /dbfs/mnt/datalake/book/chapter04/YellowTaxisDelta/_delta_log/*.json
+# MAGIC cat /tmp/commit.json | grep "add" /tmp/commit.json > /tmp/add.json
+# MAGIC python -m json.tool < /tmp/add.json
 
 # COMMAND ----------
 
 # MAGIC %sh
-# MAGIC grep "add" /dbfs/mnt/datalake/book/chapter04/YellowTaxisDelta/_delta_log/00000000000000000002.json > /tmp/commit.json
-# MAGIC python -m json.tool < /tmp/commit.json
-
-# COMMAND ----------
-
-# MAGIC %sh
-# MAGIC grep "remove" /dbfs/mnt/datalake/book/chapter04/YellowTaxisDelta/_delta_log/00000000000000000002.json > /tmp/commit.json
-# MAGIC python -m json.tool < /tmp/commit.json
+# MAGIC cat /tmp/commit.json | grep "remove" /tmp/commit.json > /tmp/remove.json
+# MAGIC python -m json.tool < /tmp/remove.json
 
 # COMMAND ----------
 
