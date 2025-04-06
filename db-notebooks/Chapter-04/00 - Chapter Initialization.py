@@ -144,7 +144,7 @@ df.write.format("delta").mode("overwrite").save("/mnt/datalake/book/chapter04/Ye
 
 # COMMAND ----------
 
-dbutils.fs.cp('/FileStore/tables/data/YellowTaxisMergeData.csv','/mnt/datalake/book/chapter04/YellowTaxisMergeData.csv', recurse=True)
+dbutils.fs.cp('/FileStore/tables/YellowTaxisMergeData.csv','/mnt/datalake/book/chapter04/YellowTaxisMergeData.csv', recurse=True)
 
 # COMMAND ----------
 

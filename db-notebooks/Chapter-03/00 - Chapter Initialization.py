@@ -194,6 +194,10 @@ data = [
 
 # データフレーム作成
 df = spark.createDataFrame(data)
-df.write.csv("/mnt/datalake/book/chapter03/YellowTaxis_append.csv", header=True, mode="overwrite")
 
-print("CSVファイルが正常に出力されました: /mnt/datalake/book/chapter03/YellowTaxis_append.csv")
+# CSVファイルに出力
+try:
+    df.write.csv("/mnt/datalake/book/chapter03/YellowTaxis_append.csv", header=True, mode="overwrite")
+    print("CSVファイルが正常に出力されました: /mnt/datalake/book/chapter03/YellowTaxis_append.csv")
+except Exception as e:
+    print("エラーです" ,e)

@@ -48,8 +48,10 @@
 
 # COMMAND ----------
 
-# MAGIC %sh
-# MAGIC ls /dbfs/mnt/datalake/book/chapter04/YellowTaxisDelta/_delta_log/*.json
+log_files = dbutils.fs.ls('/mnt/datalake/book/chapter04/YellowTaxisDelta/_delta_log/')
+json_paths = [file_info.path for file_info in log_files if file_info.path.endswith('.json')]
+for path in json_paths:
+    print(path)
 
 # COMMAND ----------
 
@@ -58,9 +60,13 @@
 
 # COMMAND ----------
 
+dbutils.fs.cp("dbfs:/mnt/datalake/book/chapter04/YellowTaxisDelta/_delta_log/00000000000000000000.json", "file:/tmp/commit.json")
+
+# COMMAND ----------
+
 # MAGIC %sh
-# MAGIC grep \"add\" /dbfs/mnt/datalake/book/chapter04/YellowTaxisDelta/_delta_log/00000000000000000000.json | sed -n 1p > /tmp/commit.json
-# MAGIC python -m json.tool < /tmp/commit.json
+# MAGIC cat /tmp/commit.json | grep "add" /commit.json | sed -n 1p > /tmp/add.json
+# MAGIC python -m json.tool < /tmp/add.json
 
 # COMMAND ----------
 
@@ -70,8 +76,8 @@
 # COMMAND ----------
 
 # MAGIC %sh
-# MAGIC grep "add" /dbfs/mnt/datalake/book/chapter04/YellowTaxisDelta/_delta_log/00000000000000000000.json | sed -n 2p > /tmp/commit.json
-# MAGIC python -m json.tool < /tmp/commit.json
+# MAGIC cat /tmp/commit.json | grep "add" /commit.json | sed -n 2p > /tmp/add2.json
+# MAGIC python -m json.tool < /tmp/add2.json
 
 # COMMAND ----------
 
@@ -80,8 +86,8 @@
 
 # COMMAND ----------
 
-# MAGIC %sh
-# MAGIC ls -al /dbfs/mnt/datalake/book/chapter04/YellowTaxisDelta
+# MAGIC %fs
+# MAGIC ls /mnt/datalake/book/chapter04/YellowTaxisDelta
 
 # COMMAND ----------
 
@@ -142,21 +148,27 @@
 
 # COMMAND ----------
 
-# MAGIC %sh
-# MAGIC ls /dbfs/mnt/datalake/book/chapter04/YellowTaxisDelta/_delta_log/*.json
+log_files = dbutils.fs.ls('/mnt/datalake/book/chapter04/YellowTaxisDelta/_delta_log/')
+json_paths = [file_info.path for file_info in log_files if file_info.path.endswith('.json')]
+for path in json_paths:
+    print(path)
+
+# COMMAND ----------
+
+dbutils.fs.cp("dbfs:/mnt/datalake/book/chapter04/YellowTaxisDelta/_delta_log/00000000000000000001.json", "file:/tmp/commit.json")
 
 # COMMAND ----------
 
 # MAGIC %sh
-# MAGIC grep "add" /dbfs/mnt/datalake/book/chapter04/YellowTaxisDelta/_delta_log/00000000000000000001.json > /tmp/commit.json
-# MAGIC python -m json.tool < /tmp/commit.json
+# MAGIC cat /tmp/commit.json | grep "add" /tmp/commit.json > /tmp/add.json
+# MAGIC python -m json.tool < /tmp/add.json
 # MAGIC
 
 # COMMAND ----------
 
 # MAGIC %sh
-# MAGIC grep "remove" /dbfs/mnt/datalake/book/chapter04/YellowTaxisDelta/_delta_log/00000000000000000001.json > /tmp/commit.json
-# MAGIC python -m json.tool < /tmp/commit.json
+# MAGIC cat /tmp/commit.json | grep "remove" /tmp/commit.json > /tmp/remove.json
+# MAGIC python -m json.tool < /tmp/remove.json
 
 # COMMAND ----------
 
@@ -165,10 +177,8 @@
 
 # COMMAND ----------
 
-# MAGIC %sh
-# MAGIC ls -al /dbfs/mnt/datalake/book/chapter04/YellowTaxisDelta/
+# MAGIC %fs
+# MAGIC ls /mnt/datalake/book/chapter04/YellowTaxisDelta/
 # MAGIC
-
-# COMMAND ----------
 
 
