@@ -100,13 +100,4 @@ try:
 except:
     print("ファイルが存在しません。dbfs:/FileStore/tables/dataへYellowTaxis_append.csvファイルをアップロードしてください。")
 
-# COMMAND ----------
 
-# MAGIC %md
-# MAGIC ###5 - Create the YellowTaxis_append.csv file to the chapter03 sub-folder
-
-# COMMAND ----------
-
-dbutils.fs.rm("/mnt/datalake/book/chapter03/YellowTaxis_append.csv", recurse=True)
-
-# COMMAND ----------
